@@ -8,11 +8,20 @@ const db = low(adapter2)
 const tokens = low(adapter)
 const moment = require('moment')
 const Discord = require('discord.js')
+const fs = require('fs')
 const client = new Discord.Client()
+client.commands = new Discord.Collection()
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'))
 const express = require('express')
+const prefix = creds.discordPrefix
 let app = express()
 let path = require('path')
 let port = 8080
+
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
+}
 
 const stayAuth = () => {
     db.read()
@@ -65,8 +74,17 @@ client.on('ready', () => {
   });
 
   client.on('message', msg => {
-    if (msg.content === 'ping') {
-      msg.reply('Pong!');
+    if (!msg.content.startsWith(prefix) || msg.author.bot || !msg.member.roles.cache.find(r => r.name === "Admin")) return;
+    const args = msg.content.slice(prefix.length).trim().split(/ +/);
+	const command = args.shift().toLowerCase();
+
+    if (!client.commands.has(command)) return;
+
+    try {
+        client.commands.get(command).execute(msg, args);
+    } catch (error) {
+        console.error(error);
+        msg.reply('there was an error trying to execute that command!');
     }
   });
 
