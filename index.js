@@ -37,9 +37,17 @@ setInterval(() => {
     stayAuth()
 }, 15000)
 
-app.get('/', function(req, res) {
+function asyncExtAuth(access_token) {
+    return new Promise(resolve => {
+      auth.extAuth(access_token, resolve);
+    });
+}
+app.get('/', async function(req, res) {
     const access_token = req.query.code;
     if (access_token) {
+        let authentication = await asyncExtAuth(access_token);
+        if (authentication == 84)
+            return res.send({error: "Please give a valid access_token"});
         res.sendFile(path.join(__dirname + '/success_page/index.html'));
         db.set('access_token', access_token).write()
         console.log("Access Token successfully refreshed")

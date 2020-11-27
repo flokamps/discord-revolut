@@ -1,3 +1,4 @@
+const { request } = require('express');
 const creds = require('./creds.json')
 
 const getJWT = () => {
@@ -18,7 +19,11 @@ const getJWT = () => {
     return token;
   };
 
-const extAuth = (access_token) => {
+function extAuthCallback(result) {
+    return result;
+}
+
+async function extAuth (access_token, extAuthCallback) {
     const jwt = getJWT()
     let https = require('follow-redirects').https
     let qs = require('querystring')
@@ -39,29 +44,30 @@ const extAuth = (access_token) => {
     };
 
     let req = https.request(options, function (res) {
-    let chunks = [];
+        let chunks = [];
 
-    res.on("data", function (chunk) {
-        chunks.push(chunk);
-    });
+        res.on("data", function (chunk) {
+            chunks.push(chunk);
+        });
 
-    res.on("end", function (chunk) {
-        let body = Buffer.concat(chunks);
-        let final = JSON.parse(body);
-        if (final.error !== undefined)
-            return console.log("Initial authentication:", final.error_description, "Please refresh the authentication grant on your Revolut app");
-        else {
-            tokens.set('access_token', final.access_token)
-                  .set('expires_in', final.expires_in)
-                  .set('refresh_token', final.refresh_token)
-                  .set('refresh_date', moment())
-                  .write()
-        }
-    });
-
-    res.on("error", function (error) {
-        console.error(error);
-    });
+        res.on("end", function () {
+            let body = Buffer.concat(chunks);
+            let final = JSON.parse(body);
+            if (final.error !== undefined) {
+                console.log("Initial authentication:", final.error_description, "Please refresh the authentication grant on your Revolut app");
+                extAuthCallback(84);
+            } else {
+                tokens.set('access_token', final.access_token)
+                    .set('expires_in', final.expires_in)
+                    .set('refresh_token', final.refresh_token)
+                    .set('refresh_date', moment())
+                    .write()
+                extAuthCallback(1);
+            }
+        });
+        res.on("error", function (error) {
+            console.error(error);
+        });
     });
 
     let postData = qs.stringify({
@@ -138,3 +144,4 @@ const refreshTkn = () => {
 
 exports.extAuth = extAuth;
 exports.refreshTkn = refreshTkn;
+exports.extAuthCallback = extAuthCallback;
