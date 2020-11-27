@@ -3,3 +3,4 @@ creds.json
 tokens.json
 package-lock.json
 privatekey.pem
+.DS_Store

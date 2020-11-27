@@ -11,6 +11,7 @@ const Discord = require('discord.js')
 const client = new Discord.Client()
 const express = require('express')
 let app = express()
+let path = require('path')
 let port = 8080
 
 const stayAuth = () => {
@@ -39,7 +40,7 @@ setInterval(() => {
 app.get('/', function(req, res) {
     const access_token = req.query.code;
     if (access_token) {
-        res.send({code: access_token})
+        res.sendFile(path.join(__dirname + '/success_page/index.html'));
         db.set('access_token', access_token).write()
         console.log("Access Token successfully refreshed")
     }
