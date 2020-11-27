@@ -5,6 +5,8 @@ const FileSync = require('lowdb/adapters/FileSync')
 const adapter = new FileSync('tokens.json')
 const tokens = low(adapter)
 const moment = require('moment')
+const Discord = require('discord.js');
+const client = new Discord.Client();
 
 const stayAuth = () => {
     if (!tokens.get('access_token').value())
@@ -26,3 +28,15 @@ stayAuth()
 setInterval(() => {
     stayAuth()
 }, 15000)
+
+client.on('ready', () => {
+    console.log(`Logged in as ${client.user.tag}!`);
+  });
+
+  client.on('message', msg => {
+    if (msg.content === 'ping') {
+      msg.reply('Pong!');
+    }
+  });
+
+client.login(creds.discordToken);

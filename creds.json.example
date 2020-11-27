@@ -2,5 +2,6 @@
     "private_key": "The path to your private key",
     "client_id": "Your Revolut API client ID",
     "access_token": "Your Bearer access token",
-    "iss": "The OAuth redirection"
+    "iss": "The OAuth redirection",
+    "discordToken": "Your Discord Token"
 }
