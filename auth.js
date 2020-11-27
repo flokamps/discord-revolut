@@ -49,7 +49,7 @@ const extAuth = (access_token) => {
         let body = Buffer.concat(chunks);
         let final = JSON.parse(body);
         if (final.error !== undefined)
-            return console.log("Initial authentication:", final.error_description);
+            return console.log("Initial authentication:", final.error_description, "Please refresh the authentication grant on your Revolut app");
         else {
             tokens.set('access_token', final.access_token)
                   .set('expires_in', final.expires_in)
