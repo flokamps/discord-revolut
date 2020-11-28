@@ -141,6 +141,85 @@ const refreshTkn = () => {
     req.end();
 }
 
+const deleteWebhook = () => {
+  let https = require('follow-redirects').https
+  const low = require('lowdb')
+  const FileSync = require('lowdb/adapters/FileSync')
+  const adapter = new FileSync('tokens.json')
+  const tokens = low(adapter)
+
+  let options = {
+    'method': 'DELETE',
+    'hostname': 'b2b.revolut.com',
+    'path': '/api/1.0/webhook',
+    'headers': {
+      'Authorization': `Bearer ${tokens.get('access_token').value()}`
+    },
+    'maxRedirects': 20
+  };
+
+  let req = https.request(options, function (res) {
+    let chunks = [];
+
+    res.on("data", function (chunk) {
+      chunks.push(chunk);
+    });
+
+    res.on("end", function (chunk) {
+      let body = Buffer.concat(chunks);
+    });
+
+    res.on("error", function (error) {
+      console.error(error);
+    });
+  });
+
+  req.end();
+}
+
+const createWebhook = () => {
+  deleteWebhook()
+  let https = require('follow-redirects').https
+  const low = require('lowdb')
+  const FileSync = require('lowdb/adapters/FileSync')
+  const adapter = new FileSync('tokens.json')
+  const tokens = low(adapter)
+
+  let options = {
+    'method': 'POST',
+    'hostname': 'b2b.revolut.com',
+    'path': '/api/1.0/webhook',
+    'headers': {
+      'Authorization': `Bearer ${tokens.get('access_token').value()}`,
+      'Content-Type': 'application/json'
+    },
+    'maxRedirects': 20
+  };
+
+  let req = https.request(options, function (res) {
+    let chunks = [];
+
+    res.on("data", function (chunk) {
+      chunks.push(chunk);
+    });
+
+    res.on("end", function (chunk) {
+      let body = Buffer.concat(chunks);
+    });
+
+    res.on("error", function (error) {
+      console.error(error);
+    });
+  });
+
+  let postData = JSON.stringify({"url":`https://${creds.iss}/webhook`});
+
+  req.write(postData);
+
+  req.end();
+}
+
 exports.extAuth = extAuth;
 exports.refreshTkn = refreshTkn;
 exports.extAuthCallback = extAuthCallback;
+exports.createWebhook = createWebhook;

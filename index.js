@@ -42,6 +42,7 @@ tokens.defaults({"access_token": "","expires_in": "","refresh_token": "", "refre
   .write()
 
 stayAuth()
+auth.createWebhook()
 
 setInterval(() => {
     stayAuth()
