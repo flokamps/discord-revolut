@@ -1,5 +1,4 @@
-const { request } = require('express');
-const creds = require('./creds.json')
+const creds = require('../creds.json')
 
 const getJWT = () => {
     const fs = require('fs')
@@ -86,7 +85,7 @@ async function extAuth (access_token, extAuthCallback) {
 const refreshTkn = () => {
     let https = require('follow-redirects').https;
     let qs = require('querystring');
-    const creds = require('./creds.json')
+    const creds = require('../creds.json')
     const low = require('lowdb')
     const moment = require('moment')
     const FileSync = require('lowdb/adapters/FileSync')
