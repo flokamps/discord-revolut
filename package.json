@@ -10,10 +10,12 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "country-emoji": "^1.5.4",
     "discord.js": "^12.5.1",
     "express": "^4.17.1",
     "follow-redirects": "^1.13.0",
     "fs": "0.0.1-security",
+    "i18n-iso-countries": "^6.2.2",
     "jsonwebtoken": "^8.5.1",
     "lowdb": "^1.0.0",
     "moment": "^2.29.1",

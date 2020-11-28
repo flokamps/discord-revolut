@@ -37,6 +37,7 @@ module.exports = {
 			  infos.accounts(resolve);
 			});
 		}
+
 		let accounts = await asyncAccounts()
 		accounts.forEach(element => {
 			let money = element.balance
