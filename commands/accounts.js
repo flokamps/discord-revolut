@@ -48,15 +48,15 @@ module.exports = {
 			accountEmbed.fields = [
 				{
 					name: ":unlock: Account ID",
-					value: element.id
+					value: '```' + element.id + '```'
 				},
 				{
 					name: ":man_raising_hand: Account name",
-					value: element.name
+					value: '```' + element.name + '```'
 				},
 				{
 					name: ":moneybag: Account balance",
-					value: element.balance + currency_symbols[element.currency]
+					value: '```' + element.balance + currency_symbols[element.currency] + '```'
 				}
 				]
 			message.channel.send(accountEmbed);
