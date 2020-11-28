@@ -19,19 +19,19 @@ module.exports = {
 		accountRib.fields = [
 			{
 				name: ":one: IBAN",
-				value: rib[1].iban
+				value: '```' + rib[1].iban + '```'
 			},
 			{
 				name: ":two: BIC",
-				value: rib[1].bic
+				value: '```' + rib[1].bic + '```'
 			},
 			{
 				name: ":three: Beneficiary",
-				value: rib[1].beneficiary
+				value: '```' + rib[1].beneficiary + '```'
 			},
 			{
 				name: ":four: Beneficiary Adress",
-				value: rib[1].beneficiary_address.street_line1 + ', ' + rib[1].beneficiary_address.postcode + ' ' + rib[1].beneficiary_address.city + ' ' + countriesName.getName(rib[1].beneficiary_address.country, "en", {select: "official"})
+				value: '```' + rib[1].beneficiary_address.street_line1 + ', ' + rib[1].beneficiary_address.postcode + ' ' + rib[1].beneficiary_address.city + ' ' + countriesName.getName(rib[1].beneficiary_address.country, "en", {select: "official"}) + '```'
 			},
 			{
 				name: ":bank: Type of transfer",
