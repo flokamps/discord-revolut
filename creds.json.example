@@ -3,5 +3,7 @@
     "client_id": "Your Revolut API client ID",
     "iss": "Your server IP with port 8080",
     "discordToken": "Your Discord Token",
+    "discordPrefix": "!",
+    "monitorChannel": "The Discord channel you want to monitor transactions",
     "access_token": "Leave blank"
 }

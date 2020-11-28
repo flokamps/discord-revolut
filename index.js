@@ -13,6 +13,7 @@ const client = new Discord.Client()
 client.commands = new Discord.Collection()
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'))
 const express = require('express')
+const bodyParser = require('body-parser')
 const prefix = creds.discordPrefix
 let app = express()
 let path = require('path')
@@ -46,6 +47,71 @@ setInterval(() => {
     stayAuth()
 }, 15000)
 
+const currency_symbols = {
+    'USD': '$', // US Dollar
+    'EUR': '€', // Euro
+    'CRC': '₡', // Costa Rican Colón
+    'GBP': '£', // British Pound Sterling
+    'ILS': '₪', // Israeli New Sheqel
+    'INR': '₹', // Indian Rupee
+    'JPY': '¥', // Japanese Yen
+    'KRW': '₩', // South Korean Won
+    'NGN': '₦', // Nigerian Naira
+    'PHP': '₱', // Philippine Peso
+    'PLN': 'zł', // Polish Zloty
+    'PYG': '₲', // Paraguayan Guarani
+    'THB': '฿', // Thai Baht
+    'UAH': '₴', // Ukrainian Hryvnia
+    'VND': '₫', // Vietnamese Dong
+};
+
+const monitor = (result) => {
+    const channel = client.channels.cache.find(channel => channel.name === creds.monitorChannel)
+    const monitorEmbed = new Discord.MessageEmbed()
+    if (result.event == "TransactionCreated") {
+        monitorEmbed.title = ':moneybag: New Transaction :moneybag:'
+        monitorEmbed.fields = [
+            {
+                name: ":unlock: Transaction ID",
+                value: '```' + result.data.id + '```'
+            },
+            {
+                name: ":moneybag: Amount",
+                value: '```' + result.data.legs[0].amount + ' ' + currency_symbols[result.data.legs[0].currency] + '```'
+            },
+            {
+                name: ":envelope: Reference",
+                value: '```' + result.data.reference + '```'
+            },
+            {
+                name: ":mailbox: State",
+                value: '```' + result.data.state + '```'
+            },
+            {
+                name: ":dollar: Updated balance",
+                value: '```' + result.data.legs[0].balance + ' ' + currency_symbols[result.data.legs[0].currency] + '```'
+            }
+            ]
+    } else if (result.event == "TransactionStateChanged") {
+        monitorEmbed.title = ':moneybag: Transaction updated :moneybag:'
+        monitorEmbed.fields = [
+            {
+                name: ":unlock: Transaction ID",
+                value: '```' + result.data.id + '```'
+            },
+            {
+                name: ":outbox_tray: Old state",
+                value: '```' + result.data.old_state + '```'
+            },
+            {
+                name: ":inbox_tray: New state",
+                value: '```' + result.data.new_state + '```'
+            }
+            ]
+    }
+    channel.send(monitorEmbed)
+}
+
 function asyncExtAuth(access_token) {
     return new Promise(resolve => {
       auth.extAuth(access_token, resolve);
@@ -64,6 +130,15 @@ app.get('/', async function(req, res) {
     else
         res.send({error: "Please specify an access token"})
 })
+
+app.use(bodyParser.json())
+
+app.post('/webhook', (req, res, next) => {
+    monitor(req.body)
+    res.status(201).json({
+      message: 'Event successfully sended'
+    });
+  });
 
 app.listen(port, () =>  { 
     console.log('Express started')
