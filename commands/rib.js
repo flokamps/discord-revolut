@@ -13,7 +13,6 @@ module.exports = {
 			});
 		}
 		let rib = await asyncRib()
-		//console.log(rib[1])
 		let country = countriesName.getName(rib[1].bank_country, "en", {select: "official"})
 		let accountRib = new Discord.MessageEmbed()
 		accountRib.title = ':bank: Bank account details :bank:'
