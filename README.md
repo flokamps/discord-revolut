@@ -3,6 +3,8 @@
 # Discord + Revolut Business integration
 Hi and welcome to the Discord + Revolut Business integration! This integration will allow you to have a precise follow-up of your transfers and payments thanks to a notification system in a predefined channel. It will also allow you to give a precise bank statement to your customers on demand and the list of your accounts available on Revolut.
 
+##### If you want to install this integration directly, please refer to [this guide]()
+
 ## Demonstration
 Here are the different functionalities offered by the integration
 
@@ -49,3 +51,17 @@ The color of the embed varies depending on the money in the account. 10 000€/$
 The integration will send a message in the channel you have defined for automatic messages notifying you 7 days before the authorization is about to expire. The authorization has a 90-day lifetime.
 
 ![notify expiration](https://i.imgur.com/m5Jy30T.png)
+
+## Installation
+Please refer to [this document]() to setup the integration
+
+## Todos
+
+ - Help command
+
+## Contributions
+
+Feel free to contribute to this project by fork and pull request this repo!
+
+## Donations
+<a href="https://www.buymeacoffee.com/rootmeih"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=rootmeih&button_colour=FF5F5F&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00"></a>
