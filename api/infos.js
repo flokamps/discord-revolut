@@ -56,6 +56,8 @@ const rib = async (ribCallback) => {
     }
     let firstAccount;
     firstAccount = await asyncAccounts();
+    if (firstAccount.message == "The request should be authorized.")
+        return ribCallback(84)
 
     let https = require('follow-redirects').https;
 

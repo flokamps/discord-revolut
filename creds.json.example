@@ -5,5 +5,4 @@
     "discordToken": "Your Discord Token",
     "discordPrefix": "!",
     "monitorChannel": "The Discord channel you want to monitor transactions",
-    "access_token": "Leave blank"
 }

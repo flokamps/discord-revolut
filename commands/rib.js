@@ -13,6 +13,8 @@ module.exports = {
 			});
 		}
 		let rib = await asyncRib()
+		if (rib == 84)
+			return message.channel.send("Please refresh autorization on your Revolut app");
 		let country = countriesName.getName(rib[1].bank_country, "en", {select: "official"})
 		let accountRib = new Discord.MessageEmbed()
 		accountRib.title = ':bank: Bank account details :bank:'
