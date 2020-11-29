@@ -30,7 +30,7 @@ Next, go on [this page](https://business.revolut.com/settings/api) and create an
 - Oauth Redirect URI: Public adress IP of your server (ex: https://50.66.23.54/) (DON'T FORGET THE HTTPS)
 
 Next click continue.
-####!Don't enable the API for the moment!
+#### !Don't enable the API for the moment!
 
 ## Discord bot configuration
 Moove the `creds.json.example` to `creds.json`
