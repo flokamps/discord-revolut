@@ -36,21 +36,17 @@ const verifyAuth = () => {
 const stayAuth = () => {
     db.read()
     tokens.read()
-    // if (!tokens.get('access_token').value())
-    //     auth.extAuth(db.get('access_token').value());
-    // else {
-        let source = moment(tokens.get('refresh_date').value());
-        let duration = tokens.get('expires_in').value();
-        let limit = source.add(duration - 60, 'seconds');
-        if (moment().isAfter(limit)) {
-            function asyncRefresh() {
-                return new Promise(resolve => {
-                  auth.refreshTkn(resolve);
-                });
-            }
-            asyncRefresh()
+    let source = moment(tokens.get('refresh_date').value());
+    let duration = tokens.get('expires_in').value();
+    let limit = source.add(duration - 60, 'seconds');
+    if (moment().isAfter(limit)) {
+        function asyncRefresh() {
+            return new Promise(resolve => {
+                auth.refreshTkn(resolve);
+            });
         }
-   // }
+        asyncRefresh()
+    }
 }
 
 tokens.defaults({"access_token": "","expires_in": "","refresh_token": "", "refresh_date": "", "primary_autorization_date": ""})
