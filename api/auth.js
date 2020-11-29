@@ -1,3 +1,4 @@
+const { DiscordAPIError } = require('discord.js');
 const creds = require('../creds.json')
 
 const getJWT = () => {
@@ -60,7 +61,7 @@ async function extAuth (access_token, extAuthCallback) {
                     .set('expires_in', final.expires_in)
                     .set('refresh_token', final.refresh_token)
                     .set('refresh_date', moment())
-                    .write()
+                    .write();
                 extAuthCallback(1);
             }
         });
@@ -219,7 +220,14 @@ const createWebhook = () => {
   req.end();
 }
 
+const notifyOwer = () => {
+  const notifyEmbed = new Discord.MessageEmbed()
+  notifyEmbed.description = ":eyes: Pssst! Revolut's access authorization is about to expire. Refresh this authorization by clicking on your API [here](https://business.revolut.com/settings/api)"
+  return notifyEmbed;
+}
+
 exports.extAuth = extAuth;
 exports.refreshTkn = refreshTkn;
 exports.extAuthCallback = extAuthCallback;
 exports.createWebhook = createWebhook;
+exports.notifyOwer = notifyOwer;

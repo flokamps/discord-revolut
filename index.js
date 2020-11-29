@@ -33,12 +33,19 @@ const stayAuth = () => {
         let source = moment(tokens.get('refresh_date').value());
         let duration = tokens.get('expires_in').value();
         let limit = source.add(duration - 60, 'seconds');
-    if (moment().isAfter(limit))
-        auth.refreshTkn()
+        if (moment().isAfter(limit))
+            auth.refreshTkn()
+    }
+    let date = moment(tokens.get('primary_autorization_date').value())
+    let limit = date.add(82, 'days')
+    if (moment().isAfter(limit)) {
+        let chann = client.channels.cache.find(channel => channel.name === creds.monitorChannel)
+        //console.log(client.channels.cache.find(channel => channel.name === creds.monitorChannel))
+        //chann.send(auth.notifyOwer())
     }
 }
 
-tokens.defaults({"access_token": "","expires_in": "","refresh_token": "", "refresh_date": ""})
+tokens.defaults({"access_token": "","expires_in": "","refresh_token": "", "refresh_date": "", "primary_autorization_date": ""})
   .write()
 
 stayAuth()
@@ -126,6 +133,8 @@ app.get('/', async function(req, res) {
             return res.send({error: "Please give a valid access_token"});
         res.sendFile(path.join(__dirname + '/success_page/index.html'));
         db.set('access_token', access_token).write()
+        tokens.read()
+        tokens.set('primary_autorization_date', moment()).write()
         console.log("Access Token successfully refreshed")
     }
     else
