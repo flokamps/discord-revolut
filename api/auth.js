@@ -221,6 +221,7 @@ const createWebhook = () => {
 }
 
 const notifyOwer = () => {
+  const Discord = require('discord.js')
   const notifyEmbed = new Discord.MessageEmbed()
   notifyEmbed.description = ":eyes: Pssst! Revolut's access authorization is about to expire. Refresh this authorization by clicking on your API [here](https://business.revolut.com/settings/api)"
   return notifyEmbed;

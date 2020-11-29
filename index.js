@@ -24,6 +24,15 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
+const verifyAuth = () => {
+    let date = moment(tokens.get('primary_autorization_date').value())
+    let limit = date.add(82, 'days')
+    if (moment().isAfter(limit)) {
+        let chann = client.channels.cache.find(channel => channel.name === creds.monitorChannel)
+        chann.send(auth.notifyOwer())
+    }
+}
+
 const stayAuth = () => {
     db.read()
     tokens.read()
@@ -36,20 +45,17 @@ const stayAuth = () => {
         if (moment().isAfter(limit))
             auth.refreshTkn()
     }
-    let date = moment(tokens.get('primary_autorization_date').value())
-    let limit = date.add(82, 'days')
-    if (moment().isAfter(limit)) {
-        let chann = client.channels.cache.find(channel => channel.name === creds.monitorChannel)
-        //console.log(client.channels.cache.find(channel => channel.name === creds.monitorChannel))
-        //chann.send(auth.notifyOwer())
-    }
 }
 
 tokens.defaults({"access_token": "","expires_in": "","refresh_token": "", "refresh_date": "", "primary_autorization_date": ""})
   .write()
 
-stayAuth()
-auth.createWebhook()
+client.on('ready', () => {
+    console.log(`Logged in as ${client.user.tag}!`);
+    stayAuth()
+    verifyAuth()
+    auth.createWebhook()
+});
 
 setInterval(() => {
     stayAuth()
@@ -153,10 +159,6 @@ app.post('/webhook', (req, res, next) => {
 app.listen(port, () =>  { 
     console.log('Express started')
 })
-
-client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
-  });
 
   client.on('message', msg => {
     if (!msg.content.startsWith(prefix) || msg.author.bot || !msg.member.roles.cache.find(r => r.name === "Admin")) return;
