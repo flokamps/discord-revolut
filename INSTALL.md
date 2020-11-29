@@ -63,7 +63,7 @@ Modify the `default` file
 sudo nano /etc/nginx/sites-available/default
 ```
 
-```json
+```
 upstream backend_discord_revolut{
     server 127.0.0.1:8080;
 }
@@ -116,7 +116,7 @@ So now, we've configured Nginx. We are ready to startup the bot!
 node index.js
 ```
 
-When the bot is up, go to your Revolut certificate page and "Enable API access to your account"
+When the bot is up, go to your Revolut certificate page and "Enable API access to your account".
 That's it! Your integration is ready to use! You can try to make the `!ping` command to ping the bot
 
 ## Contributions
