@@ -45,7 +45,6 @@ module.exports = {
 		}
 
 		let accounts = await asyncAccounts()
-		console.log(accounts)
 		if(accounts.message == 'The request should be authorized.') {
 			let refresh = await asyncRefresh();
 			if (refresh == 84)
