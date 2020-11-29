@@ -25,7 +25,7 @@ openssl req -new -x509 -key privatekey.pem -out publickey.cer -days 1825
 ```
 
 
-Next, go on [this page](https://business.revolut.com/settings/api) and create and add a certificate.
+Next, go on [this page](https://business.revolut.com/settings/api) and create a certificate.
 
 - Name: name the certificate as you want
 - X509 Public key: Copy your `publickey.cer` and paste it on this field
