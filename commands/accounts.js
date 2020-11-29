@@ -1,5 +1,6 @@
 const infos = require('../api/infos')
 const Discord = require('discord.js')
+const auth = require('../api/auth')
 
 let currency_symbols = {
     'USD': '$', // US Dollar
@@ -37,8 +38,21 @@ module.exports = {
 			  infos.accounts(resolve);
 			});
 		}
+		function asyncRefresh() {
+			return new Promise(resolve => {
+			  auth.refreshTkn(resolve);
+			});
+		}
 
 		let accounts = await asyncAccounts()
+		console.log(accounts)
+		if(accounts.message == 'The request should be authorized.') {
+			let refresh = await asyncRefresh();
+			if (refresh == 84)
+				return message.channel.send("Please refresh your autorization on your Revolut app");
+			else
+				return message.channel.send("Please wait few seconds before initialization");
+		}
 		accounts.forEach(element => {
 			let money = element.balance
 			let g = Math.round(255*money/10000)

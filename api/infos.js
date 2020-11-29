@@ -9,6 +9,7 @@ function accountCallback(result) {
 }
 
 const accounts = async (accountCallback) => {
+    tokens.read()
     let https = require('follow-redirects').https;
 
     let options = {
@@ -47,6 +48,7 @@ function ribCallback(result) {
 }
 
 const rib = async (ribCallback) => {
+    tokens.read()
     function asyncAccounts() {
         return new Promise(resolve => {
           accounts(resolve);

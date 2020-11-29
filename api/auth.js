@@ -23,6 +23,10 @@ function extAuthCallback(result) {
     return result;
 }
 
+function refreshTknCallback(result) {
+  return result;
+}
+
 async function extAuth (access_token, extAuthCallback) {
     const jwt = getJWT()
     let https = require('follow-redirects').https
@@ -83,7 +87,7 @@ async function extAuth (access_token, extAuthCallback) {
     req.end();
 };
 
-const refreshTkn = () => {
+const refreshTkn = (refreshTknCallback) => {
     let https = require('follow-redirects').https;
     let qs = require('querystring');
     const creds = require('../creds.json')
@@ -114,13 +118,16 @@ const refreshTkn = () => {
       res.on("end", function (chunk) {
         let body = Buffer.concat(chunks);
         let final = JSON.parse(body);
-        if (final.error !== undefined)
-            return console.log("Refresh token:", final.error_description);
+        if (final.error !== undefined) {
+            console.log("Refresh token:", final.error_description);
+            refreshTknCallback(84);
+        }
         else {
             tokens.set('access_token', final.access_token)
                   .set('expires_in', final.expires_in)
                   .set('refresh_date', moment())
                   .write()
+            refreshTknCallback(1);
         }
       });
     
@@ -230,5 +237,6 @@ const notifyOwer = () => {
 exports.extAuth = extAuth;
 exports.refreshTkn = refreshTkn;
 exports.extAuthCallback = extAuthCallback;
+exports.refreshTknCallback = refreshTknCallback;
 exports.createWebhook = createWebhook;
 exports.notifyOwer = notifyOwer;
