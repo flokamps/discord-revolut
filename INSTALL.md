@@ -112,6 +112,12 @@ sudo certbot renew --dry-run
 ### Startup the bot and autorize Revolut
 
 So now, we've configured Nginx. We are ready to startup the bot!
+
+Install dependencies
+```
+npm i
+```
+And startup!
 ```
 node index.js
 ```
