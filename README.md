@@ -1,5 +1,7 @@
 ![Logo](https://i.imgur.com/r2sBGZM.png)
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # Discord + Revolut Business integration
 Hi and welcome to the Discord + Revolut Business integration! This integration will allow you to have a precise follow-up of your transfers and payments thanks to a notification system in a predefined channel. It will also allow you to give a precise bank statement to your customers on demand and the list of your accounts available on Revolut.
 
